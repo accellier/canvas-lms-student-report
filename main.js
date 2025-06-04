@@ -7,7 +7,6 @@
 // @match        https://*.instructure.com/accounts/*/users/*
 // @match        https://*.instructure.com/users/*
 // @grant        none
-// @updateURL    https://raw.githubusercontent.com/accellier/canvas-lms-student-report/refs/heads/main/main.js
 // @run-at document-idle
 // ==/UserScript==
 /* global ENV */
