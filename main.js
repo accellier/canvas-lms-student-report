@@ -14,9 +14,8 @@
 
 (function() {
     'use strict';
-
     // Define the Canvas domain as a global constant
-    const domain = window.location.origin; // This will get the "https://xxxx.instructure.com" part of your URL
+    const domain = window.location.origin;
 
     function getUserIdFromUrl() {
         const path = window.location.pathname;
@@ -222,7 +221,7 @@
 
         // Construct URLSearchParams
         const queryParams = new URLSearchParams();
-        queryParams.append('per_page', '50'); // Request 50 items per page (adjust as needed)
+        queryParams.append('per_page', '50'); // API Pagination
         includeValues.forEach(value => queryParams.append('include[]', value));
         stateValues.forEach(value => queryParams.append('state[]', value));
 
@@ -234,7 +233,7 @@
         try {
             const headers = {
                 'Content-Type': 'application/json'
-                // Add Authorization header if using token-based auth and it's not handled by cookies
+                // Authorization handled by cookies as user will be already logged in.
             };
             const allEnrollments = await fetchAllPages(initialUrl, headers);
 
@@ -280,19 +279,16 @@
             const summaryHtml = `<p class="enrollment-summary"><strong>${summaryMessage}</strong></p>`;
 
             if (allEnrollments) { // True if fetch was successful and allEnrollments is an array (possibly empty)
-                // Helper to safely access nested properties and provide a default value
                 const getSafe = (fn, defaultValue = 'N/A') => {
                     try {
                         const value = fn();
-                        // Return defaultValue if value is null, undefined, or an empty string
                         return (value === null || typeof value === 'undefined' || value === '') ? defaultValue : value;
                     } catch (e) {
-                        // Catches errors from trying to access properties of null/undefined
                         return defaultValue;
                     }
                 };
 
-                let finalModalContent = summaryHtml; // Initialize with the summary message
+                let finalModalContent = summaryHtml;
 
                 if (filteredEnrollments.length > 0) {
                     let tablePortionHtml = `
@@ -360,7 +356,7 @@
                         '<p>No enrollments found for this user.</p>';
                     modalBody.innerHTML = finalModalContent;
                 }
-            } else { // allEnrollments is null or undefined, implies an issue before this point (already caught by try/catch)
+            } else {
                 modalBody.innerHTML = '<p>Could not retrieve enrollment data. An error might have occurred.</p>';
             }
         } catch (error) {
@@ -397,20 +393,18 @@
             htmlToCopy += `<h2>${titleElement.innerText}</h2>\n`;
         }
 
-        // Add summary
         const summaryElement = bodyElement.querySelector('.enrollment-summary');
         if (summaryElement) {
             htmlToCopy += summaryElement.outerHTML + '\n';
         }
 
-        // Add table (if exists) with inlined styles
         const tableElement = bodyElement.querySelector('table');
 
         if (tableElement) {
             // Clone the table to modify it for copying without affecting the displayed table
             const clonedTable = tableElement.cloneNode(true);
 
-            // Remove the "Enrollment State" column (assuming it's the 5th column, index 4)
+            // Copied data removes the "Enrollment State" column (5th column, index 4)
             const headerRow = clonedTable.querySelector('thead tr');
             if (headerRow && headerRow.children.length > 4) {
                 headerRow.children[4].remove(); // Remove 5th th
@@ -447,7 +441,7 @@
 
             const tbodyRows = clonedTable.querySelectorAll('tbody tr');
             tbodyRows.forEach((row, index) => {
-                if (index % 2 === 1) { // 0-indexed, so 1 is the second row (even)
+                if (index % 2 === 1) {
                     row.style.backgroundColor = '#f9f9f9';
                 }
             });
@@ -474,7 +468,6 @@
             await copyHtmlToClipboard(htmlToCopy, buttonElement);
         } else {
             console.warn('No content formatted for copying.');
-            // Optionally provide feedback on the button if nothing is to copy
             const originalText = buttonElement.innerText;
             buttonElement.innerText = 'Nothing to Copy';
             buttonElement.disabled = true;
