@@ -13,7 +13,7 @@
 
 (function() {
     'use strict';
-    // Define the Canvas domain as a global constant
+    // Get Canvas domain as a global constant
     const domain = window.location.origin;
 
     function getUserIdFromUrl() {
