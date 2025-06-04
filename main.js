@@ -1,3 +1,17 @@
+// ==UserScript==
+// @name         Canvas Student Report Generator
+// @namespace    http://tampermonkey.net/
+// @version      2025-05-31
+// @description  Get a student report in Canvas admin
+// @author       Paul
+// @match        https://*.instructure.com/accounts/*/users/*
+// @match        https://*.instructure.com/users/*
+// @grant        none
+// @updateURL    https://raw.githubusercontent.com/accellier/canvas-lms-student-report/refs/heads/main/main.js
+// @run-at document-idle
+// ==/UserScript==
+/* global ENV */
+
 (function() {
     'use strict';
 
@@ -166,7 +180,7 @@
             const blobHtml = new Blob([htmlContent], { type: 'text/html' });
             const plainText = getPlainTextFromHtml(htmlContent);
             const blobText = new Blob([plainText], { type: 'text/plain' });
-            
+
             const item = new ClipboardItem({
                 'text/html': blobHtml,
                 'text/plain': blobText
@@ -313,7 +327,7 @@
                             <thead>
                                 <tr>
                                     <th>Course Name</th>
-                                    <th>Course Code / SIS ID</th>                            
+                                    <th>Course Code / SIS ID</th>
                                     <th>Progress</th>
                                     <th>Completed</th>
                                     <th>Enrollment State</th>
@@ -321,7 +335,7 @@
                             </thead>
                             <tbody>
                     `;
-                    
+
                     filteredEnrollments.forEach(enrollment => {
                         // Filter ensures enrollment.course_progress is truthy.
                         tablePortionHtml += `
@@ -437,7 +451,7 @@
                     row.style.backgroundColor = '#f9f9f9';
                 }
             });
-            
+
             // Set width for the first column cells (Course Name after Enrollment State is removed)
             const firstColumnHeader = clonedTable.querySelector('thead tr th:first-child');
             if (firstColumnHeader) firstColumnHeader.style.width = '25%';
