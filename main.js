@@ -2,7 +2,7 @@
 // @name         Canvas Student Report Generator
 // @namespace    http://tampermonkey.net/
 // @version      2025-05-31
-// @description  Get a student report in Canvas admin
+// @description  Creates a copy/pastable student report in Canvas admin
 // @author       Paul
 // @match        https://*.instructure.com/accounts/*/users/*
 // @match        https://*.instructure.com/users/*
