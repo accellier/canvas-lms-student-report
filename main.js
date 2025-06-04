@@ -275,7 +275,7 @@
                 });
             }
 
-            const summaryMessage = `${completedCourses} units/clusters completed out of ${totalCourses}`;
+            const summaryMessage = `${completedCourses} courses out of ${totalCourses} completed`;
             const summaryHtml = `<p class="enrollment-summary"><strong>${summaryMessage}</strong></p>`;
 
             if (allEnrollments) { // True if fetch was successful and allEnrollments is an array (possibly empty)
